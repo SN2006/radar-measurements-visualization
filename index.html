@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Візуалізація вимірювань радару</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <main class="layout">
+    <section class="panel intro">
+      <div>
+        <p class="eyebrow">Лабораторно-практичне заняття №2</p>
+        <h1>Візуалізація вимірювань радару</h1>
+        <p class="muted">Цілі відображаються в реальному часі за даними емулятора через WebSocket.</p>
+      </div>
+      <div class="connection-row">
+        <span id="connection-indicator" class="status-dot offline"></span>
+        <span id="connection-status">Відключено</span>
+        <button id="connect-button" class="button primary" type="button">Підключитися</button>
+      </div>
+    </section>
+
+    <section class="content-grid">
+      <div class="panel chart-panel">
+        <div class="panel-header">
+          <div>
+            <h2>Радарна обстановка</h2>
+            <p class="muted">Слід зберігається протягом кількох обертів антени.</p>
+          </div>
+          <div class="metrics">
+            <span>Кут сканування: <strong id="angle-value">-</strong>°</span>
+          </div>
+        </div>
+        <div id="radar-chart" aria-label="Полярний графік цілей радару"></div>
+        <p id="error-message" class="error" role="alert"></p>
+      </div>
+
+      <aside class="side-column">
+        <section class="panel">
+          <h2>Підключення</h2>
+          <label for="websocket-url">WebSocket URL</label>
+          <input id="websocket-url" type="url" value="ws://localhost:21700">
+          <button id="clear-button" class="button secondary" type="button">Очистити слід</button>
+        </section>
+
+        <section class="panel">
+          <div class="panel-header compact">
+            <div>
+              <h2>Параметри радару</h2>
+              <p class="muted">Змінюються через HTTP API емулятора.</p>
+            </div>
+            <button id="load-config-button" class="button text-button" type="button">Завантажити</button>
+          </div>
+          <form id="config-form">
+            <label for="measurements-per-rotation">Вимірювань за оберт</label>
+            <input id="measurements-per-rotation" name="measurementsPerRotation" type="number" min="1" max="360" step="1">
+
+            <label for="rotation-speed">Швидкість обертання, RPM</label>
+            <input id="rotation-speed" name="rotationSpeed" type="number" min="0.1" max="60" step="0.1">
+
+            <label for="number-of-targets">Кількість цілей</label>
+            <input id="number-of-targets" name="numberOfTargets" type="number" min="1" max="50" step="1">
+
+            <label for="target-speed">Швидкість цілей, км/год</label>
+            <input id="target-speed" name="targetSpeed" type="number" min="0" max="20000" step="1">
+
+            <button class="button primary full-width" type="submit">Застосувати параметри</button>
+          </form>
+          <p id="config-message" class="message" role="status"></p>
+        </section>
+      </aside>
+    </section>
+  </main>
+</body>
+</html>
